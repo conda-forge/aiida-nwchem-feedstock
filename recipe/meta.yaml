@@ -1,6 +1,6 @@
 {% set name = "aiida-nwchem" %}
 {% set version = "2.1.0" %}
-{% set build = 3 %}
+{% set build = 4 %}
 {% set name_code = name + ".code" %}
 
 package:
@@ -8,7 +8,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/aiida_nwchem-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/aiida_nwchem-{{ version }}.tar.gz
   sha256: 33ecc7b012ad05b4f3a2bd8e7c11abfe4a15083f9c5fd00250f64b048d73897c
 
 build:
@@ -17,24 +17,24 @@ build:
 
 requirements:
   run:
-  - {{ pin_subpackage(name, exact=True) }}
-  - {{ pin_subpackage(name_code, exact=True) }}
+    - {{ pin_subpackage(name, exact=True) }}
+    - {{ pin_subpackage(name_code, exact=True) }}
 
 outputs:
 
-  - name:  {{ name }}
+  - name: {{ name }}
     build:
       noarch: python
       script: 'python -m pip install . --no-deps --ignore-installed -vvv '
     requirements:
       host:
         - pip
-        - python >=3.7,<3.10
+        - python {{ python_min }}
         - reentry
       run:
         - aiida-core.atomic_tools >=1.2.1,<2
         - numpy
-        - python >=3.7
+        - python >={{ python_min }}
       run_constrained:
         - {{ name_code }} =={{ version }}
     test:
@@ -44,7 +44,7 @@ outputs:
         - pip check
       requires:
         - pip
-  
+
   - name: {{ name_code }}
     build:
       noarch: python
@@ -52,6 +52,8 @@ outputs:
       run:
         - nwchem =7
     test:
+      requires:
+        - python {{ python_min }}
       commands:
         - which nwchem
 
