@@ -61,7 +61,7 @@ about:
   home: https://github.com/aiidateam/aiida-nwchem
   summary: The official AiiDA plugin for NWChem
   license: MIT
-  license_file: LICENSE
+  license_file: LICENSE.txt
 
 extra:
   recipe-maintainers:
